@@ -2,6 +2,10 @@
 
 笔记、课程地址(https://coding.imooc.com/learn/list/330.html)
 
+项目初始化
+
+demo
+
 # 初始化项目
 
 ## 创建代码仓库
@@ -191,6 +195,7 @@ export interface AxiosRequestConfig {
 然后回到 `index.ts`，我们引入 `AxiosRequestConfig` 类型，作为 `config` 的参数类型，如下：
 
 ```typescript
+//为什么./types就可以找到该文件夹下的index.ts文件，因为在tsconfig中配置了node文件解析策略
 import { AxiosRequestConfig } from './types'
 
 function axios(config: AxiosRequestConfig) {
@@ -203,9 +208,9 @@ export default axios
 
 ## 利用 XMLHttpRequest 发送请求
 
-我们并不想在 `index.ts` 中去实现发送请求的逻辑，我们利用模块化的编程思想，把这个功能拆分到一个单独的模块中。
+我们并不想在 `index.ts` 中去实现发送请求的逻辑，我们利用**模块化**的编程思想，把这个功能拆分到一个单独的模块中。
 
-于是我们在 `src` 目录下创建一个 `xhr.ts` 文件，我们导出一个 `xhr` 方法，它接受一个 `config` 参数，类型也是 `AxiosRequestConfig` 类型。
+在 `src` 目录下创建一个 `xhr.ts` 文件，我们导出一个 `xhr` 方法，它接受一个 `config` 参数，类型也是 `AxiosRequestConfig` 类型。
 
 ```typescript
 import { AxiosRequestConfig } from './types'
@@ -232,13 +237,14 @@ export default function xhr(config: AxiosRequestConfig): void {
 
 接着我们实例化了一个 `XMLHttpRequest` 对象，然后调用了它的 `open` 方法，传入了对应的一些参数，最后调用 `send` 方法发送请求。
 
-对于 `XMLHttpRequest` 的学习，我希望同学们去 [mdn](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) 上系统地学习一下它的一些属性和方法，当做参考资料，因为在后续的开发中我们可能会反复查阅这些文档资料。
+对于 `XMLHttpRequest` 的学习，[mdn](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) 
 
 ### 引入 xhr 模块
 
 编写好了 `xhr` 模块，我们就需要在 `index.ts` 中去引入这个模块，如下：
 
 ```typescript
+//export default 只导出一个，export可导出多个，所以引入方法也不一样
 import { AxiosRequestConfig } from './types'
 import xhr from './xhr'
 
@@ -271,6 +277,8 @@ export default axios
 
 其中，`webpack` 是打包构建工具，`webpack-dev-middleware` 和 `webpack-hot-middleware` 是 2 个 `express` 的 `webpack` 中间件，`ts-loader` 和 `tslint-loader` 是 `webpack` 需要的 TypeScript 相关 loader，`express` 是 Node.js 的服务端框架，`body-parser` 是 `express` 的一个中间件，解析 `body` 数据用的。
 
+webpack-dev-middleware: 是一个封装器(wrapper)，它可以把 webpack 处理过的文件发送到一个 server。
+
 ### 编写 webpack 配置文件
 
 在 `examples` 目录下创建 `webpack` 配置文件 `webpack.config.js`：
@@ -290,13 +298,17 @@ module.exports = {
    * app.ts 作为 webpack 构建的入口文件
    * entries 收集了多目录个入口文件，并且每个入口还引入了一个用于热更新的文件
    * entries 是一个对象，key 为目录名
+   * fs.readdirSync(__dirname):读取examples路径下的文件名，输出数组形式
+   * fs.statSync().isDirectory():是否是文件夹路径
+   * fs.existSync():文件是否存在，已经废弃，用stat,access代替
    */
   entry: fs.readdirSync(__dirname).reduce((entries, dir) => {
-    const fullDir = path.join(__dirname, dir)
-    const entry = path.join(fullDir, 'app.ts')
+    const fullDir = path.join(__dirname, dir) //  每个子目录的路径：examples/simple
+    const entry = path.join(fullDir, 'app.ts') //  每个子目录中入口文件的路径：examples/simple/app.ts
     if (fs.statSync(fullDir).isDirectory() && fs.existsSync(entry)) {
       entries[dir] = ['webpack-hot-middleware/client', entry]
     }
+
 
     return entries
   }, {}),
@@ -305,9 +317,9 @@ module.exports = {
    * 根据不同的目录名称，打包生成目标 js，名称和目录名一致
    */
   output: {
-    path: path.join(__dirname, '__build__'),
-    filename: '[name].js',
-    publicPath: '/__build__/'
+   path:path.join(__dirname,'__build__'),
+    filename:'[name].js', //name为模块名称
+    publicPath:'/__build__/' // // 相对于服务(server-relative)??
   },
 
   module: {
