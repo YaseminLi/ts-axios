@@ -1,6 +1,3 @@
-//发送请求
-
-
 import { AxiosRequestConfig } from "./types"
 export default function xhr(congfig: AxiosRequestConfig): void {
     const { data = null, url, method = 'get' } = congfig

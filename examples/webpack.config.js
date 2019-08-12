@@ -1,5 +1,6 @@
-const fs = requeir('fs')
+const fs = require('fs')
 const path = require('path')
+const webpack = require('webpack')
 module.exports = {
     mode: 'development',
     /**
@@ -41,14 +42,22 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 use: [
-                  {
-                    loader: 'ts-loader',
-                    options: {
-                      transpileOnly: true
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            transpileOnly: true
+                        }
                     }
-                  }
                 ]
-              }
+            }
         ]
-    }
+    },
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js']//引入模块时不用带扩展名
+    },
+
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),////在应用程序运行过程中，替换、添加或删除 模块，而无需重新加载整个页面
+        new webpack.NoEmitOnErrorsPlugin()//在编译出现错误时，使用 NoEmitOnErrorsPlugin 来跳过输出阶段。这样可以确保输出资源不会包含错误
+    ]
 }
