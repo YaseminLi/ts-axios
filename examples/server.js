@@ -46,16 +46,21 @@ router.post('/base/post', function (req, res) {
 })
 
 router.post('/base/buffer', function (req, res) {
-
-    //下面啥意思？？
+    //这是？？
     let msg = []
     req.on('data', (chunk) => {
+        console.log('chunk-----:');
+        console.log(chunk);
         if (chunk) {
             msg.push(chunk)
         }
     })
     req.on('end', () => {
+        console.log('msg-------:');
+        console.log(msg);
         let buf = Buffer.concat(msg)
+        console.log('buf-------:');
+        console.log( buf.toJSON());
         res.json(buf.toJSON())
     })
 })

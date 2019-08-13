@@ -13,5 +13,6 @@ export interface AxiosRequestConfig{
     method?:Method     //指定传入的方法名
     data?:any     //?:表示参数可选
     params?:any
+    headers?:any
 }
 
