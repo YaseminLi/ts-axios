@@ -1,13 +1,15 @@
 // 为什么./types就可以找到该文件夹下的index.ts文件，因为在tsconfig中配置了node文件解析策略
 // export default 只导出一个，export可导出多个，所以引入方法也不一样
-import { AxiosRequestConfig } from "./types"
+import { AxiosRequestConfig,AxiosPromise, AxiosResponse } from "./types"
+import {transformResponse,transformRequest} from './helpers/data'
 import xhr from "./xhr"
 import { buildURL } from './helpers/url'
-import { transformRequest } from './helpers/data'
 import {processHeaders} from './helpers/headers'
-function axios(config: AxiosRequestConfig): void {
+function axios(config: AxiosRequestConfig): AxiosPromise {
     processConfig(config)
-    xhr(config)
+    return xhr(config).then(res=>{
+        return transformReponseData(res)
+    })
 
 }
 function processConfig(config: AxiosRequestConfig): void {
@@ -26,5 +28,10 @@ function transformRequestData(config:AxiosRequestConfig):any{
 function transformHeaders(config:AxiosRequestConfig):any{
     const {headers={},data}=config
     return processHeaders(headers,data)
+}
+
+function transformReponseData(res:AxiosResponse):AxiosResponse{
+    res.data=transformResponse(res.data)
+    return res
 }
 export default axios

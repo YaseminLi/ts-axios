@@ -5,3 +5,23 @@ export function transformRequest(data: any): any {
     }
     return data
 }
+
+export function transformResponse(data:any):any{
+    if(typeof data==='string'){
+        try {
+            data=JSON.parse(data) // 不一定转化成功，所以用try catch
+        } catch (error) {
+            // 什么都不用做
+        }
+    }
+    return data
+}
+
+// ming写的
+// export function transformResponse(data: any): any {
+//     if (typeof data === 'string') {
+//         return data = JSON.parse(data)
+//     } else {
+//         return data
+//     }
+// }

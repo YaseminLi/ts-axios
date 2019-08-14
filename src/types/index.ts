@@ -14,5 +14,18 @@ export interface AxiosRequestConfig{
     data?:any     //?:表示参数可选
     params?:any
     headers?:any
+    responseType?:XMLHttpRequestResponseType
 }
 
+export interface AxiosResponse{
+    data:any
+    status:number
+    statusText:string
+    headers:any
+    config:AxiosRequestConfig
+    request:any
+}
+
+
+// Promise<T>，T 是什么，则 resolve 函数参数的类型就是什么，这是 Promise 内部的实现
+export interface AxiosPromise extends Promise<AxiosResponse>{}
