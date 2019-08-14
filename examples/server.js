@@ -60,8 +60,26 @@ router.post('/base/buffer', function (req, res) {
         console.log(msg);
         let buf = Buffer.concat(msg)
         console.log('buf-------:');
-        console.log( buf.toJSON());
+        console.log(buf.toJSON());
         res.json(buf.toJSON())
     })
+})
+router.get('/error/get', function (req, res) {
+    if (Math.random() > 0.5) {
+        res.json({
+            msg: `hello world`
+        })
+    } else {
+        res.status(500)
+        res.end()
+    }
+})
+
+router.get('/error/timeout', function (req, res) {
+    setTimeout(() => {
+        res.json({
+            msg: `hello world`
+        })
+    }, 3000)
 })
 app.use(router)
