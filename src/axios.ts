@@ -1,37 +1,13 @@
-// 为什么./types就可以找到该文件夹下的index.ts文件，因为在tsconfig中配置了node文件解析策略
-// export default 只导出一个，export可导出多个，所以引入方法也不一样
-import { AxiosRequestConfig,AxiosPromise, AxiosResponse } from "./types"
-import {transformResponse,transformRequest} from './helpers/data'
-import xhr from "./xhr"
-import { buildURL } from './helpers/url'
-import {processHeaders} from './helpers/headers'
-function axios(config: AxiosRequestConfig): AxiosPromise {
-    processConfig(config)
-    return xhr(config).then(res=>{
-        return transformReponseData(res)
-    })
+import {AxiosInstance} from './types'
+import Axios from './core/Axios'
+import {extend} from './helpers/util'
 
+function createInstance():AxiosInstance{
+    const context =new Axios()
+    const instance=Axios.prototype.request.bind(context)
+    extend(instance,context)
+// instance 本身是一个函数，又拥有了 Axios 类的所有原型和实例属性
+    return instance as AxiosInstance
 }
-function processConfig(config: AxiosRequestConfig): void {
-    config.url = transformUrl(config)
-    config.headers=transformHeaders(config)
-    config.data=transformRequestData(config)
-}
-function transformUrl(config: AxiosRequestConfig): string {
-    const { url, params } = config
-    return buildURL(url, params)
-}
-function transformRequestData(config:AxiosRequestConfig):any{
-    const {data}=config
-    return transformRequest(data)
-}
-function transformHeaders(config:AxiosRequestConfig):any{
-    const {headers={},data}=config
-    return processHeaders(headers,data)
-}
-
-function transformReponseData(res:AxiosResponse):AxiosResponse{
-    res.data=transformResponse(res.data)
-    return res
-}
+const axios=createInstance()
 export default axios

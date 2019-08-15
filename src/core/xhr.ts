@@ -1,6 +1,6 @@
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from "./types"
-import {parseHeaders} from './helpers/headers'
-import {createError} from './helpers/error'
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from "../types"
+import {parseHeaders} from '../helpers/headers'
+import {createError} from '../helpers/error'
 // 发送请求接收响应并构建响应对象，对res的加工处理放到外面
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     return new Promise((resolve,reject) => {
@@ -13,7 +13,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         if(timeout){
             request.timeout=timeout
         }
-        request.open(method.toUpperCase(), url, true)
+        request.open(method.toUpperCase(), url!, true)
         // if (headers['Content-Type']) {
         //     request.setRequestHeader('Content-Type', headers['Content-Type'])
         // }
@@ -35,7 +35,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
             }
             const responseHeaders = parseHeaders(request.getAllResponseHeaders())
             const responseData = responseType && responseType !== 'text' ? request.response : request.responseText
-            // 这里为什么还要再用一次接口呢？？
+            // 这里为什么还要再用一次接口呢？？赋值的时候就可以检查类型了
             const response:AxiosResponse = {
                 data: responseData,
                 status: request.status,

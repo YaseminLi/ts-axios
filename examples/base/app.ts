@@ -93,7 +93,7 @@ axios({
   method: 'post',
   url: '/base/post',
   headers: {
-    // 5-9节视频里说浏览器可以自动解析charset??，
+    // 5-9节视频里说浏览器可以自动解析charset？？不能，要指定的，
     'content-type': 'application/json;',
     'Accept':'application/json,text/plain,*/*'
   },
