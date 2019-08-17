@@ -136,8 +136,9 @@ function registerExtendRouter() {
             code: 0,
             message: 'ok',
             result: {
-                name: 'jack',
-                age: 18
+                name: 'xiaoming',
+                age: 18,
+                sex: 'nan'
             }
         })
     })
