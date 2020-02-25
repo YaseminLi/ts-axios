@@ -59,7 +59,6 @@ export interface AxiosInstance extends Axios {
     <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 }
 
-//use为什么返回number类型？eject要根据id进行删除这里的泛型？resolve中传入的参数config和response的类型不一样
 export interface AxiosInterceptorManager<T> {
     use(resolved: ResolvedFn<T>, rejected?: RejectedFn): number
     eject(id: number): void
