@@ -10,6 +10,8 @@
 
 ## 目录文件
 ```
+├── examples // demo测试目录
+├── doc //实现axios库的过程
 ├── CONTRIBUTING.md
 ├── LICENSE 
 ├── README.md
@@ -19,7 +21,6 @@
 ├── package.json
 ├── rollup.config.ts // rollup 配置文件
 ├── src // 源码目录
-├── test // 测试目录
 ├── tools // 发布到 GitHup pages 以及 发布到 npm 的一些配置脚本工具
 ├── tsconfig.json // TypeScript 编译配置文件,[配置](https://www.tslang.cn/docs/handbook/tsconfig-json.html)
 └── tslint.json // TypeScript lint 文件
@@ -42,6 +43,7 @@
  - `npm test`: 运行 `jest` 工具跑单元测试。
  - `npm run commit`: 运行 `commitizen` 工具提交格式化的 `git commit` 注释。
  - `npm run build`: 运行 `rollup` 编译打包 TypeScript 代码，并运行 `typedoc` 工具生成文档。
+ - `npm run dev`: 运行`node examples/server.js`,利用 Node.js 的 express 库去运行demo
  
 
 

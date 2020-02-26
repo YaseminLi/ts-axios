@@ -15,6 +15,13 @@ class InterceptorManager<T>{
         })
         return this.interceptors.length - 1
     }
+    forEach(fn:(interceptor:Interceptor<T>)=>void):void{
+        this.interceptors.forEach(interceptor=>{
+            if(interceptor!==null){
+                fn(interceptor)
+            }
+        })
+    }
     eject(id: number): void {
         if (this.interceptors[id]) {
             this.interceptors[id] = null
