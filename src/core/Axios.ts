@@ -11,11 +11,13 @@ interface PromiseChain {
 }
 export default class Axios {
     interceptors: Interceptors
-    constructor() {
+    defaults:AxiosRequestConfig
+    constructor(initConfig:AxiosRequestConfig) {
         this.interceptors = {
             request: new InterceptorManager<AxiosRequestConfig>(),
             response: new InterceptorManager<AxiosResponse>()
         }
+        this.defaults=initConfig
     }
     request(url: any, config?: any): AxiosPromise {
         if (typeof url === 'string') {
