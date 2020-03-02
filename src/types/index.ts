@@ -16,6 +16,8 @@ export interface AxiosRequestConfig {
     headers?: any
     responseType?: XMLHttpRequestResponseType
     timeout?: number
+
+    [propName: string]: any// 字符串索引签名
 }
 
 export interface AxiosResponse<T = any> {
@@ -43,10 +45,11 @@ export interface AxiosError extends Error {
 
 // axios类中的公共方法
 export interface Axios {
-    interceptors:{
-        request:AxiosInterceptorManager<AxiosRequestConfig>,
-        response:AxiosInterceptorManager<AxiosResponse>
+    interceptors: {
+        request: AxiosInterceptorManager<AxiosRequestConfig>,
+        response: AxiosInterceptorManager<AxiosResponse>
     }
+    defaults:AxiosRequestConfig
     request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
     get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
     delete<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>

@@ -9,16 +9,16 @@ const defaults: AxiosRequestConfig = {
     timeout: 0
 }
 
-//以下是对几种请求方法添加headers属性的简写
+// 以下是对几种请求方法添加headers属性的简写
 
-//不带requestData的方法
+// 不带requestData的方法
 const methodsNoData = ['delete', 'get', 'head', 'options']
 
 methodsNoData.forEach(method => {
     defaults.headers[method] = {}
 })
 
-//带requestData的方法 
+// 带requestData的方法 
 const methodsWithData = ['post', 'put', 'patch']
 
 methodsWithData.forEach(method => {

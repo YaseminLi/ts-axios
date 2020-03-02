@@ -1,5 +1,5 @@
-import { isPlainObject } from './util'
-
+import { isPlainObject, deepMerge } from './util'
+import { Method } from '../types/index'
 export function normalizeHeaderName(headers: any, normalizedName: string): void {
     if (!headers) {
         return
@@ -24,26 +24,40 @@ export function processHeaders(headers: any, data: any): any {
 
 export function parseHeaders(headers: string): any {
     // 这里为什么不直接用{}??? object.create(null)的类型为any
-    let parsed=Object.create(null)
+    let parsed = Object.create(null)
     if (!headers) {
         return parsed
     }
-    
-    headers.split('\r\n').forEach(line=>{
+
+    headers.split('\r\n').forEach(line => {
         // value里面有：时怎么处理？？let [key,...rest]=line.split(':')可以不？？
         // let [key,...value]=line.split(':')
-        let [key,value]=line.split(':')
-        key=key.trim().toLowerCase()
-        if(!key){
+        let [key, value] = line.split(':')
+        key = key.trim().toLowerCase()
+        if (!key) {
             return
         }
-        if(value){
-            value=value.trim()
+        if (value) {
+            value = value.trim()
         }
         // if(value){
         //     value=Array.isArray(value)?value.join(':'):value.trim()
         // }
-        parsed[key]=value
+        parsed[key] = value
     })
     return parsed
+}
+
+// 默认配置合并后，对headers属性值进行处理，对于 common 中定义的 header 字段，我们都要提取，而对于 post、get 这类提取，需要和该次请求的方法对应,最后再删除多余的属性
+export function flatternHeaders(headers: any, method: Method): any {
+    if (!headers) {
+        return headers
+    }
+    headers = deepMerge(headers.common || {}, headers[method] || {}, headers)
+    // 多余的属性
+    const methodsToDelete = ['delete', 'get', 'head', 'options', 'post', 'put', 'patch', 'common']
+    methodsToDelete.forEach(method => {
+        delete headers[method]
+    })
+    return headers
 }
