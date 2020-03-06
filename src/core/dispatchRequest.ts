@@ -1,8 +1,9 @@
+// 对请求数据和响应数据的处理
 import { AxiosRequestConfig,AxiosPromise, AxiosResponse } from "../types"
-import {transformResponse,transformRequest} from '../helpers/data'
 import xhr from "./xhr"
 import { buildURL } from '../helpers/url'
 import {processHeaders,flatternHeaders} from '../helpers/headers'
+import transform from './transform'
 function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
     processConfig(config)
     return xhr(config).then(res=>{
@@ -13,16 +14,12 @@ function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
 function processConfig(config: AxiosRequestConfig): void {
     config.url = transformUrl(config)
     config.headers=transformHeaders(config)
-    config.data=transformRequestData(config)
+    config.data=transform(config.data,config.headers,config.transformRequest)
     config.headers = flatternHeaders(config.headers, config.method!)
 }
 function transformUrl(config: AxiosRequestConfig): string {
     const { url, params } = config
     return buildURL(url!, params)// ！类型断言，一定存在这个参数
-}
-function transformRequestData(config:AxiosRequestConfig):any{
-    const {data}=config
-    return transformRequest(data)
 }
 function transformHeaders(config:AxiosRequestConfig):any{
     const {headers={},data}=config
@@ -30,7 +27,7 @@ function transformHeaders(config:AxiosRequestConfig):any{
 }
 
 function transformReponseData(res:AxiosResponse):AxiosResponse{
-    res.data=transformResponse(res.data)
+    res.data=transform(res.data,res.config.transformResponse)
     return res
 }
 export default dispatchRequest

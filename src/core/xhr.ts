@@ -13,6 +13,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         if(timeout){
             request.timeout=timeout
         }
+        // 请求配置化
         request.open(method.toUpperCase(), url!, true)
         // if (headers['Content-Type']) {
         //     request.setRequestHeader('Content-Type', headers['Content-Type'])

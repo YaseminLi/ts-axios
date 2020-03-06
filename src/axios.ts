@@ -4,6 +4,7 @@ import { extend } from './helpers/util'
 import defaults from './defaults'
 
 function createInstance(config: AxiosRequestConfig): AxiosInstance {
+    debugger
     const context = new Axios(config)
     const instance = Axios.prototype.request.bind(context)
     extend(instance, context)

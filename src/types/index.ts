@@ -8,6 +8,9 @@ export type Method = 'get' | 'GET'
     | 'put' | 'PUT'
     | 'patch' | 'PATCH'
 
+export interface AxiosTransformer {
+    (data: any, headers?: any): any
+}
 export interface AxiosRequestConfig {
     url?: string // 为什么要变成可选的呢？？
     method?: Method     // 指定传入的方法名
@@ -16,6 +19,8 @@ export interface AxiosRequestConfig {
     headers?: any
     responseType?: XMLHttpRequestResponseType
     timeout?: number
+    transformRequest?: AxiosTransformer | AxiosTransformer[]
+    transformResponse?: AxiosTransformer | AxiosTransformer[]
 
     [propName: string]: any// 字符串索引签名
 }
@@ -49,7 +54,7 @@ export interface Axios {
         request: AxiosInterceptorManager<AxiosRequestConfig>,
         response: AxiosInterceptorManager<AxiosResponse>
     }
-    defaults:AxiosRequestConfig
+    defaults: AxiosRequestConfig
     request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
     get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
     delete<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>

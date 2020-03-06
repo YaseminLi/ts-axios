@@ -16,12 +16,3 @@ export function transformResponse(data:any):any{
     }
     return data
 }
-
-// ming写的
-// export function transformResponse(data: any): any {
-//     if (typeof data === 'string') {
-//         return data = JSON.parse(data)
-//     } else {
-//         return data
-//     }
-// }
