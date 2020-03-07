@@ -55,6 +55,7 @@ export interface Axios {
         response: AxiosInterceptorManager<AxiosResponse>
     }
     defaults: AxiosRequestConfig
+    create<T = any>(config: AxiosRequestConfig): Axios
     request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
     get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
     delete<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
@@ -69,6 +70,9 @@ export interface Axios {
 export interface AxiosInstance extends Axios {
     <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
     <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+}
+export interface AxiosStatic extends AxiosInstance {
+    create(config?: AxiosRequestConfig): AxiosInstance
 }
 
 export interface AxiosInterceptorManager<T> {

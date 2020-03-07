@@ -4,7 +4,8 @@ import { isPlainObject, deepMerge } from '../helpers/util'
 
 // 默认合并策略：优先取config2
 function defaultStrat(val1: any, val2: any): any {
-    return typeof val2 !== undefined ? val2 : val1
+    // 这里注意undefined 是string类型
+    return typeof val2 !== 'undefined' ? val2 : val1
 }
 
 // 只取config2
@@ -16,8 +17,10 @@ function fromVal2Strat(val1: any, val2: any): any {
 }
 const strats = Object.create(null)
 stratKeysFromVal2.forEach(key => {
-    strats[key] = fromVal2Strat
+    strats[key] = fromVal2Strat   
 })
+
+
 
 // 复杂合并
 function deepMergeStrat(val1: any, val2: any): any {
@@ -44,7 +47,6 @@ function mergeConfig(config1: AxiosRequestConfig, config2?: AxiosRequestConfig):
     for (let key in config2) {
         mergeField(key)
     }
-
     for (let key in config1) {
         if (!config2[key]) {
             mergeField(key)
@@ -55,7 +57,6 @@ function mergeConfig(config1: AxiosRequestConfig, config2?: AxiosRequestConfig):
         const strat = strats[key] || defaultStrat
         config[key] = strat(config1[key], config2![key])
     }
-
     return config
 }
 export default mergeConfig

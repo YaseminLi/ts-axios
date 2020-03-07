@@ -9,7 +9,6 @@ function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
     return xhr(config).then(res=>{
         return transformReponseData(res)
     })
-
 }
 function processConfig(config: AxiosRequestConfig): void {
     config.url = transformUrl(config)
@@ -27,7 +26,7 @@ function transformHeaders(config:AxiosRequestConfig):any{
 }
 
 function transformReponseData(res:AxiosResponse):AxiosResponse{
-    res.data=transform(res.data,res.config.transformResponse)
+    res.data=transform(res.data,res.headers,res.config.transformResponse)
     return res
 }
 export default dispatchRequest
