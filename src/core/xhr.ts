@@ -4,7 +4,7 @@ import { createError } from '../helpers/error'
 // 发送请求接收响应并构建响应对象，对res的加工处理放到外面
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     return new Promise((resolve, reject) => {
-        const { data = null, url, method = 'get', headers, responseType, timeout, cancelToken } = config
+        const { data = null, url, method = 'get', headers, responseType, timeout, cancelToken,withCredentials } = config
         const request = new XMLHttpRequest()
         // 请求中传入responseType时
         if (responseType) {
@@ -12,6 +12,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         }
         if (timeout) {
             request.timeout = timeout
+        }
+        // withCredentials 为true获得的第三方cookies，将会依旧享受同源策略
+        if(withCredentials){
+            request.withCredentials=true
         }
         // 请求配置化
         request.open(method.toUpperCase(), url!, true)

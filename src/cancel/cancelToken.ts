@@ -20,7 +20,7 @@ export default class CancelToken {
             resolvePromise(this.reason)
         })
     }
-    throwIfRequested(): void {
+    throwIfRequested(){
         if (this.reason) {
             throw this.reason
         }

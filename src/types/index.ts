@@ -21,7 +21,8 @@ export interface AxiosRequestConfig {
     timeout?: number
     transformRequest?: AxiosTransformer | AxiosTransformer[]
     transformResponse?: AxiosTransformer | AxiosTransformer[]
-    CancelToken?: CancelToken
+    cancelToken?: CancelToken
+    withCredentials?: boolean
     [propName: string]: any// 字符串索引签名
 }
 
@@ -55,7 +56,6 @@ export interface Axios {
         response: AxiosInterceptorManager<AxiosResponse>
     }
     defaults: AxiosRequestConfig
-    CancelToken: CancelTokenStatic
     create<T = any>(config: AxiosRequestConfig): Axios
     request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
     get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
@@ -97,7 +97,7 @@ export interface CancelToken {
     promise: Promise<Cancel>
     reason?: Cancel
 
-    throwIfRequested():void
+    throwIfRequested(): void
 }
 
 // 取消方法的接口定义
