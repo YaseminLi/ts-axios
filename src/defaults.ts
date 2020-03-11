@@ -19,7 +19,9 @@ const defaults: AxiosRequestConfig = {
         function (data: any): any {
             return transformResponse(data)
         }
-    ]
+    ],
+    xsrfCookieName:'XSRF-TOKEN',
+    xsrfHeaderName:'X-XSRF-TOKEN'
 }
 
 // 以下是对几种请求方法添加headers属性的简写

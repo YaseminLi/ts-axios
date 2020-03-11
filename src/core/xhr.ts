@@ -1,10 +1,12 @@
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from "../types"
 import { parseHeaders } from '../helpers/headers'
 import { createError } from '../helpers/error'
+import cookie from '../helpers/cookie'
+import { isURLSameOrigin } from '../helpers/url'
 // 发送请求接收响应并构建响应对象，对res的加工处理放到外面
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     return new Promise((resolve, reject) => {
-        const { data = null, url, method = 'get', headers, responseType, timeout, cancelToken,withCredentials } = config
+        const { data = null, url, method = 'get', headers, responseType, timeout, cancelToken, withCredentials, xsrfCookieName, xsrfHeaderName } = config
         const request = new XMLHttpRequest()
         // 请求中传入responseType时
         if (responseType) {
@@ -14,14 +16,23 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
             request.timeout = timeout
         }
         // withCredentials 为true获得的第三方cookies，将会依旧享受同源策略
-        if(withCredentials){
-            request.withCredentials=true
+        if (withCredentials) {
+            request.withCredentials = true
         }
         // 请求配置化
         request.open(method.toUpperCase(), url!, true)
         // if (headers['Content-Type']) {
         //     request.setRequestHeader('Content-Type', headers['Content-Type'])
         // }
+
+        // header中添加cookie
+        if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName) {
+            const xsrfValue = cookie.read(xsrfCookieName)
+            if (xsrfValue) {
+                headers[xsrfHeaderName!] = xsrfValue
+            }
+        }
+
         Object.keys(headers).forEach(name => {
             // data 为空时，设置content-type无效
             if (data === null && name.toLowerCase() === 'content-type') {
@@ -31,7 +42,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
             }
         })
         if (cancelToken) {
-            cancelToken.promise.then(reason=> {
+            cancelToken.promise.then(reason => {
                 request.abort()
                 reject(reason)
             })
