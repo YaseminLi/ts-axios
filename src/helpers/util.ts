@@ -43,6 +43,10 @@ export function deepMerge(...objs: any[]): any {
     return result
 }
 
-export function isFormData(val:any):boolean {
-    return typeof val!=='undefined'&& val instanceof FormData
+export function isFormData(val: any): boolean {
+    return typeof val !== 'undefined' && val instanceof FormData
+}
+
+export function isURLSearchParams(val: any): boolean{
+    return typeof val !== 'undefined' && val instanceof URLSearchParams
 }

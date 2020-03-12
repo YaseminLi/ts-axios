@@ -29,6 +29,7 @@ export interface AxiosRequestConfig {
     onUploadProgress?: (e: ProgressEvent) => void // 监听上传速度
     auth?:AxiosBasicCredentials // http授权
     validateStatus?:(status:number)=>boolean // 合法状态码修改
+    paramsSerializer?:(params:any)=>string
     [propName: string]: any// 字符串索引签名
 }
 

@@ -18,8 +18,8 @@ function processConfig(config: AxiosRequestConfig): void {
     config.headers = flatternHeaders(config.headers, config.method!)
 }
 function transformUrl(config: AxiosRequestConfig): string {
-    const { url, params } = config
-    return buildURL(url!, params)// ！类型断言，一定存在这个参数
+    const { url, params, paramsSerializer } = config
+    return buildURL(url!, params, paramsSerializer)// ！类型断言，一定存在这个参数
 }
 function transformHeaders(config: AxiosRequestConfig): any {
     const { headers = {}, data } = config
@@ -31,7 +31,7 @@ function transformReponseData(res: AxiosResponse): AxiosResponse {
     return res
 }
 
-function throwIfCancellationRequested(config:AxiosRequestConfig):void {
+function throwIfCancellationRequested(config: AxiosRequestConfig): void {
     if (config.cancelToken) {
         config.cancelToken.throwIfRequested()
     }

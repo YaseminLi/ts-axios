@@ -1,5 +1,4 @@
-import { isDate, isPlainObject } from './util'
-import { resolve } from 'dns'
+import { isDate, isPlainObject,isURLSearchParams } from './util'
 
 // 解析URL接口
 interface URLOrigin {
@@ -16,34 +15,43 @@ function encode(val: string): string {
         .replace(/%5B/gi, '[')
         .replace(/%5D/gi, ']')
 }
-export function buildURL(url: string, params?: any): string {
+export function buildURL(url: string, params?: any, paramsSerializer?:(params: any) => string): string {
     if (!params) {
         return url
     }
-    const parts: string[] = []
-    Object.keys(params).forEach((key) => {
-        const val = params[key]
-        if (val === null || typeof val === 'undefined') {
-            return
-        }
-        let values = []
-        if (Array.isArray(val)) {
-            values = val
-            key += '[]'
-        } else {
-            values = [val]
-        }
-        values.forEach((val) => {
-            if (isDate(val)) {
-                val = val.toISOString()
+    let serializedParams
+    if (paramsSerializer) {
+        // 优先使用自定义参数序列化方法
+        serializedParams = paramsSerializer(params)
+    } else if (isURLSearchParams(params)) {
+        // 如果params是URLSearchParams实例，直接返回toString
+        serializedParams = params.toString()
+    } else {
+        const parts: string[] = []
+        Object.keys(params).forEach((key) => {
+            const val = params[key]
+            if (val === null || typeof val === 'undefined') {
+                return
             }
-            if (isPlainObject(val)) {
-                val = JSON.stringify(val)
+            let values = []
+            if (Array.isArray(val)) {
+                values = val
+                key += '[]'
+            } else {
+                values = [val]
             }
-            parts.push(`${encode(key)}=${encode(val)}`)
+            values.forEach((val) => {
+                if (isDate(val)) {
+                    val = val.toISOString()
+                }
+                if (isPlainObject(val)) {
+                    val = JSON.stringify(val)
+                }
+                parts.push(`${encode(key)}=${encode(val)}`)
+            })
         })
-    })
-    let serializedParams = parts.join('&')
+        serializedParams = parts.join('&')
+    }
     if (serializedParams) {
         let markIndex = url.indexOf('#')
         if (markIndex !== -1) {
