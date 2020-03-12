@@ -4,6 +4,7 @@ import xhr from "./xhr"
 import { buildURL } from '../helpers/url'
 import { processHeaders, flatternHeaders } from '../helpers/headers'
 import transform from './transform'
+import {isAbsoluteURL,combineURL} from '../helpers/util'
 function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
     throwIfCancellationRequested(config)
     processConfig(config)
@@ -18,7 +19,11 @@ function processConfig(config: AxiosRequestConfig): void {
     config.headers = flatternHeaders(config.headers, config.method!)
 }
 function transformUrl(config: AxiosRequestConfig): string {
-    const { url, params, paramsSerializer } = config
+    let { url, params, paramsSerializer,baseURL } = config
+    if(baseURL&&!isAbsoluteURL(url!)){
+        url=combineURL(baseURL,url)
+    }
+    
     return buildURL(url!, params, paramsSerializer)// ！类型断言，一定存在这个参数
 }
 function transformHeaders(config: AxiosRequestConfig): any {
