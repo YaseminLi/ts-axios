@@ -20,8 +20,12 @@ const defaults: AxiosRequestConfig = {
             return transformResponse(data)
         }
     ],
-    xsrfCookieName:'XSRF-TOKEN',
-    xsrfHeaderName:'X-XSRF-TOKEN'
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    validateStatus(status: number): boolean {
+        return status >= 200 && status < 300
+    }
+
 }
 
 // 以下是对几种请求方法添加headers属性的简写

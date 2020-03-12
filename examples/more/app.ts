@@ -96,13 +96,30 @@ import axios from '../../src/index'
 
 
 // http授权
-axios.post('/more/post', {
-  a: 1
-}, {
-  auth: {
-    username: 'Yee1',
-    password: '123456'
+// axios.post('/more/post', {
+//   a: 1
+// }, {
+//   auth: {
+//     username: 'Yee1',
+//     password: '123456'
+//   }
+// }).then(res => {
+//   console.log(res)
+// })
+
+// 自定义状态码
+axios.get('/more/304').then(res => {
+  console.log(res)
+}).catch((e) => {
+  console.log(e.message)
+})
+
+axios.get('/more/304', {
+  validateStatus(status) {
+    return status >= 200 && status < 400
   }
 }).then(res => {
   console.log(res)
+}).catch((e) => {
+  console.log(e.message)
 })
