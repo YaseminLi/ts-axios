@@ -49,6 +49,10 @@ module.exports = {
                         }
                     }
                 ]
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader'],//CSS=loader先读取css文件，然后另一个是样式加载器将<style>标签插入
             }
         ]
     },

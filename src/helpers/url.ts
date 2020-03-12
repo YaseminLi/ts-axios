@@ -69,4 +69,5 @@ function resolveURL(url: string): URLOrigin {
     urlParsingNode.setAttribute('href', url)
     const { protocol, host } = urlParsingNode
     return { protocol, host }
+    // 也可直接用origin origin=protocal+host
 }

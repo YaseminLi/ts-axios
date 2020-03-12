@@ -25,6 +25,9 @@ export interface AxiosRequestConfig {
     withCredentials?: boolean
     xsrfCookieName?:string
     xsrfHeaderName?:string
+    onDownloadProgress?: (e: ProgressEvent) => void // 监听下载速度
+    onUploadProgress?: (e: ProgressEvent) => void // 监听上传速度
+    auth?:AxiosBasicCredentials // http授权
     [propName: string]: any// 字符串索引签名
 }
 
@@ -130,4 +133,9 @@ export interface Cancel {
 
 export interface CancelStatic {
     new(message?: string): Cancel
+}
+
+export interface AxiosBasicCredentials{
+    username:string
+    password:string
 }

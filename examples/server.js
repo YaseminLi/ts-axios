@@ -7,7 +7,8 @@ const bodyParser = require('body-parser')
 const app = express()
 const compiler = webpack(WebpackConfig)
 const cookieParser = require('cookie-parser')
-
+const path=require('path')
+const atob=require('atob')
 
 require('./server2')
 // 告诉 express 使用 webpack-dev-middleware，
@@ -30,6 +31,13 @@ app.use(express.static(__dirname, {
     setHeaders(res) {
         res.cookie('XSRF-TOKEN-D', '1234abc')
     }
+}))
+
+
+// 上传文件的中间件
+const multipart = require('connect-multiparty')
+app.use(multipart({
+    uploadDir: path.resolve(__dirname, 'upload-file')
 }))
 const port = process.env.PORT || 8080
 module.exports = app.listen(port, () => {
