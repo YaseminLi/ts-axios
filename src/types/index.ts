@@ -23,14 +23,15 @@ export interface AxiosRequestConfig {
     transformResponse?: AxiosTransformer | AxiosTransformer[]
     cancelToken?: CancelToken
     withCredentials?: boolean
-    xsrfCookieName?:string
-    xsrfHeaderName?:string
+    xsrfCookieName?: string
+    xsrfHeaderName?: string
     onDownloadProgress?: (e: ProgressEvent) => void // 监听下载速度
     onUploadProgress?: (e: ProgressEvent) => void // 监听上传速度
-    auth?:AxiosBasicCredentials // http授权
-    validateStatus?:(status:number)=>boolean // 合法状态码修改
-    paramsSerializer?:(params:any)=>string // 自定义参数序列化
-    baseURL?:string
+    auth?: AxiosBasicCredentials // http授权
+    validateStatus?: (status: number) => boolean // 合法状态码修改
+    paramsSerializer?: (params: any) => string // 自定义参数序列化
+    baseURL?: string
+
     [propName: string]: any// 字符串索引签名
 }
 
@@ -64,7 +65,6 @@ export interface Axios {
         response: AxiosInterceptorManager<AxiosResponse>
     }
     defaults: AxiosRequestConfig
-    create<T = any>(config: AxiosRequestConfig): Axios
     request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
     get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
     delete<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
@@ -73,6 +73,7 @@ export interface Axios {
     post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
     put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
     patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+    getUri(config: AxiosRequestConfig): string // 返回请求的url
 }
 
 // 混合类型的接口，本身是一个函数（参数为config,函数返回promise),又继承了axios的属性方法。
@@ -80,12 +81,19 @@ export interface AxiosInstance extends Axios {
     <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
     <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 }
+export interface AxiosClassStatic {
+    new(config: AxiosRequestConfig): Axios
+}
 export interface AxiosStatic extends AxiosInstance {
     create(config?: AxiosRequestConfig): AxiosInstance
 
     CancelToken: CancelTokenStatic
     Cancel: CancelStatic
     isCancel: (value: any) => boolean
+    all<T>(promises: Array<T | Promise<T>>): Promise<T[]>
+    spread<T, R>(callback: (...args: T[]) => R): (arr: T[]) => R
+
+    Axios: AxiosClassStatic // 暴露class类
 }
 
 export interface AxiosInterceptorManager<T> {
@@ -138,7 +146,8 @@ export interface CancelStatic {
     new(message?: string): Cancel
 }
 
-export interface AxiosBasicCredentials{
-    username:string
-    password:string
+export interface AxiosBasicCredentials {
+    username: string
+    password: string
 }
+

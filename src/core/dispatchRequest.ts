@@ -5,7 +5,7 @@ import { buildURL } from '../helpers/url'
 import { processHeaders, flatternHeaders } from '../helpers/headers'
 import transform from './transform'
 import {isAbsoluteURL,combineURL} from '../helpers/util'
-function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
+export function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
     throwIfCancellationRequested(config)
     processConfig(config)
     return xhr(config).then(res => {
@@ -18,7 +18,7 @@ function processConfig(config: AxiosRequestConfig): void {
     config.data = transform(config.data, config.headers, config.transformRequest)
     config.headers = flatternHeaders(config.headers, config.method!)
 }
-function transformUrl(config: AxiosRequestConfig): string {
+export function transformUrl(config: AxiosRequestConfig): string {
     let { url, params, paramsSerializer,baseURL } = config
     if(baseURL&&!isAbsoluteURL(url!)){
         url=combineURL(baseURL,url)
@@ -41,4 +41,3 @@ function throwIfCancellationRequested(config: AxiosRequestConfig): void {
         config.cancelToken.throwIfRequested()
     }
 }
-export default dispatchRequest
