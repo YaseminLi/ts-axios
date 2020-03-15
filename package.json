@@ -47,7 +47,7 @@
     }
   },
   "jest": {
-    "transform": { 
+    "transform": {
       ".(ts|tsx)": "ts-jest"
     },
     "testEnvironment": "jsdom",
