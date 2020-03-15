@@ -22,13 +22,13 @@ export function processHeaders(headers: any, data: any): any {
     return headers
 }
 
+
 export function parseHeaders(headers: string): any {
-    // 这里为什么不直接用{}??? object.create(null)的类型为any
+    // {} 没有索签名,parsed[key]会报错
     let parsed = Object.create(null)
     if (!headers) {
         return parsed
     }
-
     headers.split('\r\n').forEach(line => {
         // value里面有：时怎么处理？？let [key,...rest]=line.split(':')可以不？？
         // let [key,...value]=line.split(':')
@@ -40,9 +40,6 @@ export function parseHeaders(headers: string): any {
         if (value) {
             value = value.trim()
         }
-        // if(value){
-        //     value=Array.isArray(value)?value.join(':'):value.trim()
-        // }
         parsed[key] = value
     })
     return parsed

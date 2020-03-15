@@ -4,7 +4,7 @@ import xhr from "./xhr"
 import { buildURL } from '../helpers/url'
 import { processHeaders, flatternHeaders } from '../helpers/headers'
 import transform from './transform'
-import {isAbsoluteURL,combineURL} from '../helpers/util'
+import {isAbsoluteURL,combineURL} from '../helpers/url'
 export function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
     throwIfCancellationRequested(config)
     processConfig(config)

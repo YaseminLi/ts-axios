@@ -1,6 +1,6 @@
 const toString = Object.prototype.toString
 
-// val isDate是什么用法？？
+// val is Date是什么用法？为布尔值，返回值是Date类型吗
 export function isDate(val: any): val is Date {
     return toString.call(val) === '[object Date]'
 }
@@ -51,12 +51,3 @@ export function isURLSearchParams(val: any): boolean{
     return typeof val !== 'undefined' && val instanceof URLSearchParams
 }
 
-// 判断请求的url是否为绝对地址
-export function isAbsoluteURL(url:string):boolean{
-    return  /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
-}
-
-// 合并baseURL和请求url
-export function combineURL(baseURL:string,relativeURL?:string):string{
-    return relativeURL ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL
-}
