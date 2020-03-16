@@ -15,6 +15,8 @@ function encode(val: string): string {
         .replace(/%5B/gi, '[')
         .replace(/%5D/gi, ']')
 }
+
+// 拼接参数
 export function buildURL(url: string, params?: any, paramsSerializer?:(params: any) => string): string {
     if (!params) {
         return url

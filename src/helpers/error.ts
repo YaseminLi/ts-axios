@@ -14,7 +14,7 @@ export class AxiosError extends Error {
         request?: any,
         response?: AxiosResponse,
     ) {
-        super(message)
+        super(message) // 这句原因导致测试覆盖率为50%
 
         this.config = config
         this.code = code

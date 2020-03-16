@@ -1,5 +1,6 @@
 import { isPlainObject, deepMerge } from './util'
 import { Method } from '../types/index'
+// 将headers的属性名替换为指定大小写法
 export function normalizeHeaderName(headers: any, normalizedName: string): void {
     if (!headers) {
         return
@@ -11,7 +12,7 @@ export function normalizeHeaderName(headers: any, normalizedName: string): void 
         }
     })
 }
-
+// 将headers属性名contnt-type规范写法，当data是对象时，给headers添加content-type
 export function processHeaders(headers: any, data: any): any {
     normalizeHeaderName(headers, 'Content-Type')
     if (isPlainObject(data)) {
@@ -22,7 +23,7 @@ export function processHeaders(headers: any, data: any): any {
     return headers
 }
 
-
+// 将字符串headers转化成对象
 export function parseHeaders(headers: string): any {
     // {} 没有索签名,parsed[key]会报错
     let parsed = Object.create(null)
@@ -30,23 +31,19 @@ export function parseHeaders(headers: string): any {
         return parsed
     }
     headers.split('\r\n').forEach(line => {
-        // value里面有：时怎么处理？？let [key,...rest]=line.split(':')可以不？？
-        // let [key,...value]=line.split(':')
-        let [key, value] = line.split(':')
+        let [key, ...vals] = line.split(':')
         key = key.trim().toLowerCase()
         if (!key) {
             return
         }
-        if (value) {
-            value = value.trim()
-        }
+        const value=vals.join(':').trim()
         parsed[key] = value
     })
     return parsed
 }
 
 // 默认配置合并后，对headers属性值进行处理，对于 common 中定义的 header 字段，我们都要提取，而对于 post、get 这类提取，需要和该次请求的方法对应,最后再删除多余的属性
-export function flatternHeaders(headers: any, method: Method): any {
+export function flattenHeaders(headers: any, method: Method): any {
     if (!headers) {
         return headers
     }
