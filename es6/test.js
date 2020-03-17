@@ -64,4 +64,4 @@
 // }).then()
 // .catch()
 
-new Promise()
+new Promise();

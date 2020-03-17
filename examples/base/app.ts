@@ -53,22 +53,22 @@ import axios from '../../src/index'
 //   }
 // })
 
-// axios({
-//   method: 'get',
-//   url: '/base/get?foo=bar',
-//   params: {
-//     bar: 'baz'
-//   }
-// })
+axios({
+  method: 'get',
+  url: '/base/get?foo=bar',
+  params: {
+    bar: 'baz'
+  }
+})
 
-// axios({
-//   method: 'post',
-//   url: '/base/post',
-//   data: {
-//     a: 1,
-//     b: 2
-//   }
-// })
+axios({
+  method: 'post',
+  url: '/base/post',
+  data: {
+    a: 1,
+    b: 2
+  }
+})
 
 // const arr = new Int32Array([21, 31])
 
@@ -89,19 +89,19 @@ import axios from '../../src/index'
   
 // })
 
-axios({
-  method: 'post',
-  url: '/base/post',
-  headers: {
-    // 5-9节视频里说浏览器可以自动解析charset？？不能，要指定的，
-    'content-type': 'application/json;',
-    'Accept':'application/json,text/plain,*/*'
-  },
-  data: {
-    a: 1,
-    b: 2
-  }
-})
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   headers: {
+//     // 5-9节视频里说浏览器可以自动解析charset？？不能，要指定的，
+//     'content-type': 'application/json;',
+//     'Accept':'application/json,text/plain,*/*'
+//   },
+//   data: {
+//     a: 1,
+//     b: 2
+//   }
+// })
 
 // const paramsString = 'q=URLUtils.searchParams&topic=api'
 // const searchParams = new URLSearchParams(paramsString)
@@ -113,25 +113,25 @@ axios({
 // })
 
 
-axios({
-  method: 'post',
-  url: '/base/post',
-  data: {
-    a: 1,
-    b: 2
-  }
-}).then((res) => {
-  console.log(res)
-})
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   data: {
+//     a: 1,
+//     b: 2
+//   }
+// }).then((res) => {
+//   console.log(res)
+// })
 
-axios({
-  method: 'post',
-  url: '/base/post',
-  responseType: 'json',
-  data: {
-    a: 3,
-    b: 4
-  }
-}).then((res) => {
-  console.log(res)
-})
+// axios({
+//   method: 'post',
+//   url: '/base/post',
+//   responseType: 'json',
+//   data: {
+//     a: 3,
+//     b: 4
+//   }
+// }).then((res) => {
+//   console.log(res)
+// })

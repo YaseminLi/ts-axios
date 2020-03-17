@@ -25,6 +25,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         } = config
         const request = new XMLHttpRequest()// 第一步：创建request实例
 
+        // method 方法转化为大写
         request.open(method.toUpperCase(), url!, true)// 第二步：request.open方法初始化
 
         configureRequest()// 第三步：执行 configureRequest 配置 request 对象
