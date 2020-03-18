@@ -26,7 +26,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         const request = new XMLHttpRequest()// 第一步：创建request实例
 
         // method 方法转化为大写
-        request.open(method.toUpperCase(), url!, true)// 第二步：request.open方法初始化
+        request.open(method.toLowerCase(), url!, true)// 第二步：request.open方法初始化
 
         configureRequest()// 第三步：执行 configureRequest 配置 request 对象
 
@@ -91,7 +91,6 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
             }
             // 处理网络错误，不加new Error是什么效果?控制台里error没有error标签
             request.onerror = function () {
-                // reject(new Error('Network Error'))
                 reject(createError('Network Error', config, null, request))
             }
             // 处理超时错误

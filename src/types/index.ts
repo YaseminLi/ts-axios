@@ -18,7 +18,7 @@ export interface AxiosRequestConfig {
     params?: any
     headers?: any
     responseType?: XMLHttpRequestResponseType
-    timeout?: number
+    timeout?: number // 请求超时时间，超过时间后会触发xhr的ontimeout事件
     transformRequest?: AxiosTransformer | AxiosTransformer[]
     transformResponse?: AxiosTransformer | AxiosTransformer[]
     cancelToken?: CancelToken
